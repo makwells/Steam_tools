@@ -113,14 +113,6 @@ class Profile(Checker_steam_profile):           #Parse Main profile information 
             self.country = "Not found"
 
 #==================================================================================================================================
-    #PLAYER AVATAR
-#==================================================================================================================================
-        # profile_avatar_ = self.profile.find('div', class_='playerAvatar profile_header_size online')
-        # proifle_avatar__ = self.profile.find_all('img')
-        # # profile_avatar_ = self.profile.select_one('div.playerAvatarAutosizeInner img:nth-of-type(2)')
-        # self.profile_avatar = proifle_avatar__['src']
-        # output_profile_avatar = "Avatar"
-#==================================================================================================================================
 #OUTPUTS
 #==================================================================================================================================
         output_nickname             = "Nickname"
@@ -409,4 +401,5 @@ if __name__ == "__main__":
     # start_program = Checker_steam_profile()
     # profile_ = Profile()
     # awards_ = Awards()
+
     # frineds = Friends()
