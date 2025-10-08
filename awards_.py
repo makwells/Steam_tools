@@ -1,4 +1,11 @@
-class Awards(Checker_steam_profile):
+from bs4 import BeautifulSoup as bs
+from rich.console import Console
+from rich.table import Table
+import requests
+import re
+import threading
+
+class Awards():
     def __init__(self):
         super().__init__()
 
