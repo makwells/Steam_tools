@@ -63,6 +63,7 @@ class _Profile_():
         output_lvl                  = "Level"
         output_status               = "Status"
         output_country              = "Country"
+        output_account_age          = "Account registration date"
         
         profile_parse_variable = [
             output_nickname,
