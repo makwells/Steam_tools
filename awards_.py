@@ -5,13 +5,18 @@ import requests
 import re
 import threading
 
-class Awards():
-    def __init__(self):
-        super().__init__()
-
-#==================================================================================================================================
+class _Awards_():
+    def __init__(self, url_awards):
+#=======================================================================================================
 #ADWARDS RECEIVED | GIVEN
-#==================================================================================================================================
+#=======================================================================================================
+
+        self.steam_profile_url_awards = f"{url_awards}"
+        self.responce_awards   = requests.get(self.steam_profile_url_awards)
+
+        self.html_awards       = self.responce_awards.text
+        self.awards            = bs(self.html_awards, 'lxml')
+
         try:
             profile_awards_header_subtitle = self.awards.find_all('div', class_='profile_awards_header_subtitle')
             
@@ -21,7 +26,6 @@ class Awards():
             output_profile_awards_received = "Awards Received"
             output_profile_awards_given    = "Awards Given"
 
- 
         except TypeError:
             self.profile_awards_received = "Not found"
             self.profile_awards_given = "Not found"
@@ -29,9 +33,9 @@ class Awards():
             self.profile_awards_received = "Not found"
             self.profile_awards_given = "Not found"
 
-#==================================================================================================================================
+#=======================================================================================================
 #OUTPUTS
-#==================================================================================================================================
+#=======================================================================================================
 
         awards_parse_variable = [
             output_profile_awards_received,
@@ -53,11 +57,8 @@ class Awards():
             show_lines=True,
             )
 
-        self.Awards_Table.add_column("[#81b0fc]Variable[/#81b0fc]", width=self.width_terminal//6)
-        self.Awards_Table.add_column("[#4287F5]Value[/#4287F5]", width=self.width_terminal//2)
-
-        for row_add_left, row_add_right in zip(awards_parse_variable, awards_parse_value): 
-            self.Awards_Table.add_row(f"[bold]{row_add_left}[/bold]", f"{row_add_right}")
-
-        self.console.print(self.Awards_Table)
-        print("\n")
+        for left, right in zip(awards_parse_variable, awards_parse_value):
+            print(f"{left}: {right}")
+    
+if __name__ == "__main__":
+    _Awards_()

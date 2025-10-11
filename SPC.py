@@ -5,6 +5,7 @@ import platform
 import json
 
 import profile_
+import awards_
 
 #Функция очистки консоли
 def clear_console():
@@ -28,17 +29,23 @@ class SPC_():
 
         while works == True:
 
-            #Profile information output
+
             # self.url = input("\n\nPlease provide the Steam account link you are interested in: ")
             self.url = "https://steamcommunity.com/id/--mkws656--"
+            self.url_awards = f"{self.url}/awards/"
 
-            print("\n" + separator_print)
+            #Profile information output
+            print("\n\nProfile Information:")
+            print(separator_print)
             self.profile = profile_._Profile_(self.url)
             print(separator_print)
 
             #Awards information output
-
-
+            print("\nAwards Information:")
+            print(separator_print)
+            self.__awards = awards_._Awards_(self.url_awards)
+            print(separator_print)
+            
             works = False
             # SPC_()
 
