@@ -1,6 +1,4 @@
 from bs4 import BeautifulSoup as bs
-from rich.console import Console
-from rich.table import Table
 import requests
 import re
 import threading
@@ -92,5 +90,6 @@ class _Profile_():
 
 
 if __name__ == "__main__":
-    _Profile_()
-    # print("Run main file")
+    # _Profile_()
+    print("Run main file")
+    
