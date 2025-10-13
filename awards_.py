@@ -5,10 +5,15 @@ import threading
 
 class _Awards_():
     def __init__(self, url_awards):
+
         self.steam_profile_url_awards = f"{url_awards}"
         self.responce_awards   = requests.get(self.steam_profile_url_awards)
         self.html_awards       = self.responce_awards.text
         self.awards            = bs(self.html_awards, 'lxml')
+        
+
+        self.profile_awards_received = None
+        self.profile_awards_given    = None
 
 #=======================================================================================================
 #ADWARDS RECEIVED | GIVEN
@@ -20,20 +25,20 @@ class _Awards_():
             self.profile_awards_received = profile_awards_header_subtitle[0].text
             self.profile_awards_given = profile_awards_header_subtitle[1].text
 
-            output_profile_awards_received = "Awards Received"
-            output_profile_awards_given    = "Awards Given"
-
-        except TypeError:
+        except Exception:
             self.profile_awards_received = "Not found"
             self.profile_awards_given = "Not found"
-        except UnboundLocalError:
-            self.profile_awards_received = "Not found"
-            self.profile_awards_given = "Not found"
+        # except UnboundLocalError:
+        #     self.profile_awards_received = "Not found"
+        #     self.profile_awards_given = "Not found"
 
 #=======================================================================================================
 #OUTPUTS
 #=======================================================================================================
+        output_profile_awards_received = "Awards Received"
+        output_profile_awards_given    = "Awards Given"
 
+        
         awards_parse_variable = [
             output_profile_awards_received,
             output_profile_awards_given

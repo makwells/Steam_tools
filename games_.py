@@ -2,6 +2,7 @@
 
 import requests
 from bs4 import BeautifulSoup as bs
+import re 
 
 class _Games_():
     def __init__(self, url_games):
@@ -10,12 +11,13 @@ class _Games_():
         self.html_games = self.responce_games.text
         self.games = bs(self.html_games, 'lxml')
 
-        self.games_quantity_block = self.games.find("div", class_="_2nl8HoZ_rxg3AGpYs0N_UD Panel Focusable")
+
         
-        self.games_quantity__ = self.games_quantity_block.find_all("a", class_="sectionTab active")
-        for sectionTab in self.games_quantity:
-            self.games_quantity_ = sectionTab.text
-        print(self.games_quantity_)
+
+    
+        #Shows the best games by time
+  
+         
 
 
 

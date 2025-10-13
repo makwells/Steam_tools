@@ -30,7 +30,7 @@ class SPC_():
 
             #Links
             # self.url = input("\n\nPlease provide the Steam account link you are interested in: ")
-            self.url = "https://steamcommunity.com/id/--mkws656--"
+            self.url = "https://steamcommunity.com/id/--mkws656--/"
             self.url_awards = f"{self.url}/awards/"
             self.url_games = f"{self.url}/games/?tab=all"
 
