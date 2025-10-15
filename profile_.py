@@ -3,7 +3,7 @@ import requests
 import re
 import threading
 
-class _Profile_():
+class Profile__():
 
     def __init__(self, url):
 
@@ -15,15 +15,19 @@ class _Profile_():
 
         self.country = ""
         self.status  = ""
+        self.vac_ban = ""
+        self.community_ban = "" 
+        self.trade_ban = ""
+        self.profile_type = "Public"
 #=======================================================================================================
 #NICKNAME
 #=======================================================================================================
         self.nickname_ = self.profile.find_all('span', class_='actual_persona_name')
         for actual_persona_name in self.nickname_:
             self.nickname = actual_persona_name.text
-#=======================================================================================================
+#====================================================================================
 #ACCOUNT LVL
-#=======================================================================================================
+#====================================================================================
         try:
             lvl_ = self.profile.find('span', class_='friendPlayerLevelNum')
             for friendPlayerLevelNum in lvl_:
@@ -32,9 +36,9 @@ class _Profile_():
             self.lvl = "Not found"
         except UnboundLocalError:
             self.lvl = "Not found"
-#=======================================================================================================
+#====================================================================================
 #STATUS | ONLINE/OFFLINE
-#=======================================================================================================
+#====================================================================================
         try:
             status_ = self.profile.find_all('div', class_='responsive_status_info')
             for profile_in_game_header in status_:
@@ -42,9 +46,9 @@ class _Profile_():
                 self.status = self.status__.replace("\n", "")
         except Exception:
             self.status = "Not found"
-#=======================================================================================================
+#====================================================================================
 #COUNTRY (Displays the country listed in the profile)   
-#=======================================================================================================
+#====================================================================================
         try:
             self.country_ = self.profile.find_all('div', class_="header_location")
             for header_location in self.country_:
@@ -53,12 +57,11 @@ class _Profile_():
         except Exception:
             self.country = "Not found"
 
-#=======================================================================================================
+#====================================================================================
 #Ban status   
-#=======================================================================================================
-        try:
-            bans = {}
-
+#====================================================================================
+        bans = {}
+        try:    
             #vac bans check
             self.vac_ban_ = self.profile.find(text=lambda t: 'VAC ban' in t)
             if self.vac_ban_:
@@ -67,63 +70,86 @@ class _Profile_():
             else:
                 bans['vac_ban'] = False
                 bans['vac_ban_text'] = None
+
+        except TypeError:
+            bans = None
+            self.vac_ban = "Not found"
+        except UnboundLocalError:
+            bans = None
+            self.vac_ban = "Not found"
+
                 
             
-            #community ban check
-            community_ban = self.profile.find(text=lambda t: 'community ban' in t.lower())
-            if community_ban:
+        #community ban check
+        try:
+
+            community_ban_ = self.profile.find(text=lambda t: 'community ban' in t.lower())
+            if community_ban_:
                 bans['community_ban'] = True
-                bans['community_ban_text'] = community_ban.strip()
+                self.community_ban = community_ban_.strip()
             else:
                 bans['community_ban'] = False
                 bans['community_ban_text'] = None
-            
-            #trade bun check
-            trade_ban = self.profile.find(text=lambda t: 'trade ban' in t.lower())
-            if trade_ban:
-                bans['trade_ban'] = True
-                bans['trade_ban_text'] = trade_ban.strip()
-            else:
-                bans['trade_ban'] = False
-                bans['trade_ban_text'] = None
         except Exception:
-            self.vac_ban = None
+            self.community_ban = "Not found"
+            
+        #trade bun check
+        trade_ban = self.profile.find(text=lambda t: 'trade ban' in t.lower())
+        if trade_ban:
+            bans['trade_ban'] = True
+            bans['trade_ban_text'] = trade_ban.strip()
+        else:
+            bans['trade_ban'] = False
+            bans['trade_ban_text'] = None
+
         
-#=======================================================================================================
+#====================================================================================
 #Profile type(public/private)   
-#=======================================================================================================
-        # self.private_profile = self.profile.find(text=lambda t: 'profile is private' in t.lower())
-        # if self.private_profile:
-        #     bans['private'] = True
-        #     bans['private_text'] = self.private_profile.strip()
-#=======================================================================================================
+#====================================================================================
+        
+        self.private_profile = self.profile.find(text=lambda t: 'profile is private' in t.lower())
+        if self.private_profile:
+            bans['private'] = True
+            self.profile_type = self.private_profile.strip()
+            if self.profile_type == "This profile is private.":
+                self.profile_type = "Private"
+#====================================================================================
 #OUTPUTS
-#=======================================================================================================
+#====================================================================================
         output_nickname             = "Nickname"
         output_url                  = "Profile link"
+        output_profile_type         = "Profile type"
         output_lvl                  = "Level"
         output_status               = "Status"
         output_country              = "Country"
-        output_ban                  = "Bans"
+        output_ban                  = "\nBans"
         
         profile_parse_variable = [
             output_nickname,
             output_url,
+            output_profile_type,
             output_lvl,
             # output_status,
             output_country,
-            output_ban
+        
+        #BANS
+            output_ban,    
+            f"\n\tVAC ban",
+            f"\n\tCommunity ban",
+            f"\n\tTrade ban"
         ]
         
         profile_parse_value = [
             self.nickname,
             self.steam_profile_url,
+            self.profile_type,
             self.lvl,
             # self.status,
             self.country,
-            "\n" + "\t" + "VAC ban: " + self.vac_ban,
-            "\n" + "\t" + "Community ban: "
-
+            "",
+            "\n\t\t" + self.vac_ban,                 # VAC BAN
+            "\n\t\t" + self.community_ban,           # Community ban
+            "\n\t\t" + self.trade_ban                # Trade ban
         ]
 
         # system("cls")

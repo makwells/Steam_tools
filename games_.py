@@ -10,16 +10,8 @@ class _Games_():
         self.responce_games = requests.get(self.stam_profile_url_games)
         self.html_games = self.responce_games.text
         self.games = bs(self.html_games, 'lxml')
-
-
-        
-
-    
-        #Shows the best games by time
-  
          
-
-
+        
 
 if __name__ == "__main__":
     _Games_()

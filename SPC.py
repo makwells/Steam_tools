@@ -17,6 +17,9 @@ def clear_console():
         os.system("cls")
     if os_ == "Linux":
         os.system("clear")
+    if os_ == "Darwin":
+         os.system("clear")
+    
 
 class SPC_():
     def __init__(self):
@@ -30,14 +33,15 @@ class SPC_():
 
             #Links
             # self.url = input("\n\nPlease provide the Steam account link you are interested in: ")
-            self.url = "https://steamcommunity.com/id/--mkws656--/"
+            # self.url = "https://steamcommunity.com/profiles/76561199171248662"
+            self.url = "https://steamcommunity.com/profiles/76561199052128636"
             self.url_awards = f"{self.url}/awards/"
             self.url_games = f"{self.url}/games/?tab=all"
 
             #Profile information output
             print("\n\nProfile Information:")
             print(separator_print)
-            self.__profile = profile_._Profile_(self.url)
+            self.profile__ = profile_.Profile__(self.url)
             print(separator_print)
 
             #Awards information output
@@ -59,15 +63,15 @@ def startApp():
 
             clear_console()
             
-            print(f"[.spc] started")
-            print(f"[.spc] OS: {platform.system()}")
+            # print(f"[.spc] started")
+            # print(f"[.spc] OS: {platform.system()}")
             
             source_dir = "./source/"
 
             #ascii art ./source/ascii.txt
             try:
                 with open(f"{source_dir}ascii.txt", "r", encoding="utf-8") as asciiArt_file:
-                    print(f"[.spc] File load: \"{source_dir}ascii.txt\"")
+                    # print(f"[.spc] File load: \"{source_dir}ascii.txt\"")
                     asciiArt = asciiArt_file.read()
                     asciiArt_file.close()
             
