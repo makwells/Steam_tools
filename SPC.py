@@ -3,12 +3,12 @@
 import os 
 import platform
 import json
+import requests 
 
 import profile_
 import awards_
 import games_
 
-#Функция очистки консоли
 def clear_console():
 
     os_ = platform.system()
@@ -23,41 +23,41 @@ def clear_console():
 
 class SPC_():
     def __init__(self):
-        works = True
 
         separator = "="
         width_terminal = os.get_terminal_size().columns
         separator_print = separator * width_terminal
 
-        while works == True:
+        while True:
+            try:
+                # self.url = input("\n\nPlease provide the Steam account link you are interested in: ")
+                self.url = "https://steamcommunity.com/profiles/76561199387958662"
+                self.url_awards = f"{self.url}/awards/"
+                self.url_games = f"{self.url}/games/?tab=all/"
 
-            #Links
-            # self.url = input("\n\nPlease provide the Steam account link you are interested in: ")
-            # self.url = "https://steamcommunity.com/profiles/76561199171248662"
-            self.url = "https://steamcommunity.com/profiles/76561199052128636"
-            self.url_awards = f"{self.url}/awards/"
-            self.url_games = f"{self.url}/games/?tab=all"
+                #Profile information output
+                print("\n\nProfile Information:")
+                print(separator_print)
+                self.profile__ = profile_.Profile__(self.url)
+                print(separator_print)
 
-            #Profile information output
-            print("\n\nProfile Information:")
-            print(separator_print)
-            self.profile__ = profile_.Profile__(self.url)
-            print(separator_print)
+                #Awards information output
+                print("\nAwards Information:")
+                print(separator_print)
+                self.__awards = awards_.Awards__(self.url_awards)
+                print(separator_print)
 
-            #Awards information output
-            print("\nAwards Information:")
-            print(separator_print)
-            self.__awards = awards_._Awards_(self.url_awards)
-            print(separator_print)
-
-            #Games information output
-            print("\nGames Information")
-            print(separator_print)
-            self.__games = games_._Games_(self.url_games)
-            print(separator_print)
+                #Games information output
+                print("\nGames Information")
+                print(separator_print)
+                self.__games = games_.Games__(self.url_games)
+                print(separator_print)
+                break
+                # SPC_()
+            except:
+                print("Please check your internet connection and try again.")
+                break
             
-            works = False
-            # SPC_()
 
 def startApp():
 
@@ -86,6 +86,7 @@ def startApp():
 
             except FileNotFoundError:
                 print(f"[.spc] Error: file \"{source_dir}data.json\" not found")
+                
 
             
             clear_console()

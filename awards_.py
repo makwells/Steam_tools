@@ -1,9 +1,8 @@
 from bs4 import BeautifulSoup as bs
 import requests
 import re
-import threading
 
-class _Awards_():
+class Awards__():
     def __init__(self, url_awards):
 
         self.steam_profile_url_awards = f"{url_awards}"
@@ -15,9 +14,9 @@ class _Awards_():
         self.profile_awards_received = None
         self.profile_awards_given    = None
 
-#=======================================================================================================
+#====================================================================================
 #ADWARDS RECEIVED | GIVEN
-#=======================================================================================================
+#====================================================================================
 
         try:
             profile_awards_header_subtitle = self.awards.find_all('div', class_='profile_awards_header_subtitle')
@@ -28,13 +27,13 @@ class _Awards_():
         except Exception:
             self.profile_awards_received = "Not found"
             self.profile_awards_given = "Not found"
-        # except UnboundLocalError:
-        #     self.profile_awards_received = "Not found"
-        #     self.profile_awards_given = "Not found"
+        except UnboundLocalError:
+            self.profile_awards_received = "Not found"
+            self.profile_awards_given = "Not found"
 
-#=======================================================================================================
+#====================================================================================
 #OUTPUTS
-#=======================================================================================================
+#====================================================================================
         output_profile_awards_received = "Awards Received"
         output_profile_awards_given    = "Awards Given"
 

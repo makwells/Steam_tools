@@ -1,11 +1,14 @@
 from bs4 import BeautifulSoup as bs
 import requests
 import re
-import threading
+from fake_useragent import UserAgent
 
 class Profile__():
 
     def __init__(self, url):
+
+        # usrAgent = UserAgent().random
+        
 
         self.steam_profile_url   = f"{url}"
         self.responce_profile    = requests.get(self.steam_profile_url)
@@ -19,9 +22,9 @@ class Profile__():
         self.community_ban = "" 
         self.trade_ban = ""
         self.profile_type = "Public"
-#=======================================================================================================
+#====================================================================================
 #NICKNAME
-#=======================================================================================================
+#====================================================================================
         self.nickname_ = self.profile.find_all('span', class_='actual_persona_name')
         for actual_persona_name in self.nickname_:
             self.nickname = actual_persona_name.text
@@ -106,7 +109,6 @@ class Profile__():
 #====================================================================================
 #Profile type(public/private)   
 #====================================================================================
-        
         self.private_profile = self.profile.find(text=lambda t: 'profile is private' in t.lower())
         if self.private_profile:
             bans['private'] = True
