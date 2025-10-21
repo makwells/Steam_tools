@@ -64,7 +64,7 @@ class wishlist():
 
         try:
             url = f"https://store.steampowered.com/api/appdetails?appids={appid}"
-            self.responce = requests.get(url, headers=headers, data=data)
+            self.responce = requests.get(url, headers=headers)
             self.json_game = self.responce.json()
         except:
             print("Game is not found... =(")
