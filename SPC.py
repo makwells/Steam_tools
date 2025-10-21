@@ -3,7 +3,7 @@
 import os 
 import platform
 import json
-import requests 
+import requests
 
 import profile_
 import awards_
@@ -20,7 +20,6 @@ def clear_console():
     if os_ == "Darwin":
          os.system("clear")
     
-
 class SPC_():
     def __init__(self):
 
@@ -48,17 +47,16 @@ class SPC_():
                 print(separator_print)
 
                 #Games information output
-                print("\nGames Information")
-                print(separator_print)
-                self.__games = games_.Games__(self.url_games)
-                print(separator_print)
+                # print("\nGames Information")
+                # print(separator_print)
+                # self.__games = games_.Games__(self.url_games)
+                # print(separator_print)
                 break
                 # SPC_()
             except:
                 print("Please check your internet connection and try again.")
                 break
             
-
 def startApp():
 
             clear_console()
@@ -92,7 +90,6 @@ def startApp():
             clear_console()
             #Вывод ascii art
             print("\n" + asciiArt)
-
 
             #spc info
             print("\nSPC - Steam Profile Checker, a tool that will help you get complete information about Steam profile, view the account cost, and view the cost of items in inventory, and much more.\n")
