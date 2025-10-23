@@ -6,7 +6,7 @@ import json
 import requests
 
 from utils.profileInformations import *
-from utils.storeInformations import *
+from utils.storeInformations import wishlist_
 
 #Очистка консоли
 def clear_console():
@@ -34,13 +34,16 @@ class SPC():
         while True:
             try:
                 self.menu = input("> ").strip().lower()
+
                 match self.menu:
                     case "profile":
                         self.steam_account()
                     case "wishlist":
-                      self.wishlist_store()
-                break
-                # SPC_()
+                        self.wishlist_store()
+                # break
+                    case "q":
+                        self.quit_message()
+                SPC()
             except Exception as e:
                 # print("Please check your internet connection and try again.")
                 print(e)
@@ -73,7 +76,12 @@ class SPC():
             # print(separator_print)   
 
     def wishlist_store(self):
+         print("w")
          self.wishlist_menu = wishlist_.wishlist()
+
+    def quit_message(self):
+         print("I hope you found what you were looking for.\nGoodbye")
+         quit()
          
 def startApp():
 
