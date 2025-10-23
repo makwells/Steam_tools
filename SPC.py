@@ -43,10 +43,12 @@ class SPC():
                 # break
                     case "q":
                         self.quit_message()
+                    case _:
+                          print("Unknow command")
+                          SPC()
                 SPC()
-            except Exception as e:
+            except:
                 # print("Please check your internet connection and try again.")
-                print(e)
                 break
 
 
@@ -76,7 +78,6 @@ class SPC():
             # print(separator_print)   
 
     def wishlist_store(self):
-         print("w")
          self.wishlist_menu = wishlist_.wishlist()
 
     def quit_message(self):
@@ -86,9 +87,6 @@ class SPC():
 def startApp():
 
             clear_console()
-            
-            # print(f"[.spc] started")
-            # print(f"[.spc] OS: {platform.system()}")
             
             data_dir = "./data/"
 
@@ -114,17 +112,17 @@ def startApp():
             
             clear_console()
             #Вывод ascii art
-            print("\n" + asciiArt)
+            print("\n", asciiArt)
 
             #spc info
-            print("\nSPC - Steam Profile Checker, a tool that will help you get complete information about Steam profile, view the account cost, and view the cost of items in inventory, and much more.\n")
+            print("\n\tSPC - Steam Profile Checker, a tool that will help you get complete information about Steam profile, view the account cost, and view the cost of items in inventory, and much more.\n")
 
             #version
-            print(f"Version: {data["version"]}")
+            print(f"\tVersion: {data["version"]}")
             #author
-            print(f"Author: {data["author"]}")
+            print(f"\tAuthor: {data["author"]}")
             #github
-            print(f"GitHub: {data["github"]}")   
+            print(f"\tGitHub: {data["github"]}")   
 
             spc_instance = SPC()    
 
