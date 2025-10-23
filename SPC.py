@@ -6,6 +6,7 @@ import json
 import requests
 
 from utils.profileInformations import *
+from utils.storeInformations import *
 
 #Очистка консоли
 def clear_console():
@@ -19,46 +20,61 @@ def clear_console():
     if os_ == "Darwin":
          os.system("clear")
 
-class SPC_():
+class SPC():
     def __init__(self):
 
         #Символ разделения
-        separator = "="
+        self.separator = "-"
         #Длина терминала
-        width_terminal = os.get_terminal_size().columns
-        separator_print = separator * width_terminal
+        self.width_terminal = os.get_terminal_size().columns
+        self.separator_print = self.separator * self.width_terminal
+
+        
 
         while True:
             try:
-                #Ссылка на профиль
-                # self.url = input("\n\nPlease provide the Steam account link you are interested in: ")
-                self.url = "https://steamcommunity.com/profiles/76561199387958662"
-                self.url_awards = f"{self.url}/awards/"
-                self.url_games = f"{self.url}/games/?tab=all/"
-
-                #Вывод основной информации о профили(main page)
-                print("\n\nProfile Information:")
-                print(separator_print)
-                self.profile__ = profile_.Profile__(self.url)
-                print(separator_print)
-
-                #Вывод информации о наградах
-                print("\nAwards Information:")
-                print(separator_print)
-                self.__awards = awards_.Awards__(self.url_awards)
-                print(separator_print)
-
-                #Вывод информации о играх
-                # print("\nGames Information")
-                # print(separator_print)
-                # self.__games = games_.Games__(self.url_games)
-                # print(separator_print)
+                self.menu = input("> ").strip().lower()
+                match self.menu:
+                    case "profile":
+                        self.steam_account()
+                    case "wishlist":
+                      self.wishlist_store()
                 break
                 # SPC_()
-            except:
-                print("Please check your internet connection and try again.")
+            except Exception as e:
+                # print("Please check your internet connection and try again.")
+                print(e)
                 break
-            
+
+
+    def steam_account(self):
+            #Ссылка на профиль
+            # self.url = input("\n\nPlease provide the Steam account link you are interested in: ")
+            self.url = "https://steamcommunity.com/profiles/76561199387958662"
+            self.url_awards = f"{self.url}/awards/"
+            self.url_games = f"{self.url}/games/?tab=all/"
+
+            #Вывод основной информации о профили(main page)
+            print("\n\nProfile Information:")
+            print(self.separator_print)
+            self.profile_menu = profile_.Profile__(self.url)
+            print(self.separator_print)
+
+             #Вывод информации о наградах
+            print("\nAwards Information:")
+            print(self.separator_print)
+            self.awards_menu = awards_.Awards__(self.url_awards)
+            print(self.separator_print)
+
+            #Вывод информации о играх
+            # print("\nGames Information")
+            # print(separator_print)
+            # self.games_menu = games_.Games__(self.url_games)
+            # print(separator_print)   
+
+    def wishlist_store(self):
+         self.wishlist_menu = wishlist_.wishlist()
+         
 def startApp():
 
             clear_console()
@@ -102,7 +118,7 @@ def startApp():
             #github
             print(f"GitHub: {data["github"]}")   
 
-            spc_instance = SPC_()    
+            spc_instance = SPC()    
 
 if __name__ == "__main__":
     run = startApp()
