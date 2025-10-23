@@ -1,3 +1,4 @@
 .env
+.env.example
 source/api.txt
 /venv

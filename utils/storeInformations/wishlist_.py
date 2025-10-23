@@ -20,6 +20,7 @@ class wishlist():
                 self.game_info(appid=appid)
             case "remove":
                 ...
+                
             case "list":
                 ...
 #====================================================================================

@@ -5,9 +5,8 @@ import platform
 import json
 import requests
 
-import profile_
-import awards_
-import games_
+from utils.profileInformations import *
+
 
 def clear_console():
 
