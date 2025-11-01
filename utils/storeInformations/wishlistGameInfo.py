@@ -1,7 +1,9 @@
 
 from fake_useragent import UserAgent
 import requests
-import json
+import config
+from db_models import add_game, init_db
+import asyncio
 # from rich import print
 
 from utils.storeInformations import wishlist_
@@ -9,19 +11,22 @@ from utils.storeInformations import wishlist_
 class GameInfo():
     def __init__(self):
         
+        #Рандомый юзер агент, чтобы при поступление большого количества запросов, steam не банил ip.
         self.usrAgent = UserAgent()
         self.headers = {
             "User-Agent": self.usrAgent.random
         }
 
+        #Команда выхода из wishlist>info
         self.appName = input("\tApp info > ")
+        if self.appName == ".":
+            wishlist_.wishlist()
+
         self.appid = self.find_appid(appName=self.appName)
-        self.find_game_info(appid=self.appid)
+        asyncio.run(init_db(config.DB_NAME))
+        asyncio.run(self.find_game_info(appid=self.appid))
 
-        # wishlist_.wishlist().self.wishlist_menu = ""
-        # wishlist_.wishlist()
-
-    def find_game_info(self, appid):
+    async def find_game_info(self, appid):
 
         try:
             url = f"https://store.steampowered.com/api/appdetails?appids={appid}"
@@ -61,7 +66,6 @@ class GameInfo():
             output_game_type,
             output_steam_appid,
             output_is_free
-
         ]
 
         wishlist_parse_value = [
@@ -73,6 +77,17 @@ class GameInfo():
         
         for left, right in zip(wishlist_parse_virable, wishlist_parse_value):
             print(f"{left}: {right}")
+        try:
+            await add_game(
+                game_name=self.game_name,
+                game_type=self.game_type,
+                app_id=self.appid,
+                price=0,
+                discount_price=0
+            )
+        except Exception as e:
+            print("error while adding game to db: {}", e)
+
 
     def find_appid(self, appName):
         try:

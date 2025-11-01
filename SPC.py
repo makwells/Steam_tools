@@ -6,19 +6,9 @@ import json
 import requests
 
 from utils.profileInformations import *
+from utils.profileInformations import friends_
 from utils.storeInformations import wishlist_
 
-#Очистка консоли
-def clear_console():
-
-    os_ = platform.system()
-
-    if os_ == "Windows":
-        os.system("cls")
-    if os_ == "Linux":
-        os.system("clear")
-    if os_ == "Darwin":
-         os.system("clear")
 
 class SPC():
     def __init__(self):
@@ -29,8 +19,6 @@ class SPC():
         self.width_terminal = os.get_terminal_size().columns
         self.separator_print = self.separator * self.width_terminal
 
-        
-
         while True:
             try:
                 self.menu = input("> ").strip().lower()
@@ -38,6 +26,7 @@ class SPC():
                 match self.menu:
                     case "profile":
                         self.steam_account()
+
                     case "wishlist":
                         self.wishlist_store()
                 # break
@@ -47,7 +36,8 @@ class SPC():
                           print("Unknow command")
                           SPC()
                 SPC()
-            except:
+            except Exception as e:
+                print(e)
                 # print("Please check your internet connection and try again.")
                 break
 
@@ -55,7 +45,7 @@ class SPC():
     def steam_account(self):
             #Ссылка на профиль
             # self.url = input("\n\nPlease provide the Steam account link you are interested in: ")
-            self.url = "https://steamcommunity.com/profiles/76561199387958662"
+            self.url = "https://steamcommunity.com/id/--mkws656--/"
             self.url_awards = f"{self.url}/awards/"
             self.url_games = f"{self.url}/games/?tab=all/"
 
@@ -70,6 +60,10 @@ class SPC():
             print(self.separator_print)
             self.awards_menu = awards_.Awards__(self.url_awards)
             print(self.separator_print)
+
+            #Вывод информации о друзьях
+            print(f"\nFriends Information\n{self.separator_print}")
+            self.friends_menu = friends_.Friends()
 
             #Вывод информации о играх
             # print("\nGames Information")
@@ -86,7 +80,6 @@ class SPC():
          
 def startApp():
 
-            clear_console()
             
             data_dir = "./data/"
 
@@ -110,12 +103,11 @@ def startApp():
                 
 
             
-            clear_console()
             #Вывод ascii art
             print("\n", asciiArt)
 
             #spc info
-            print("\n\tSPC - Steam Profile Checker, a tool that will help you get complete information about Steam profile, view the account cost, and view the cost of items in inventory, and much more.\n")
+            print("\nSPC - Steam Profile Checker, a tool that will help you get complete information about Steam profile, view the account cost, and view the cost of items in inventory, and much more.\n")
 
             #version
             print(f"\tVersion: {data["version"]}")

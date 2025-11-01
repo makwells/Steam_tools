@@ -9,19 +9,21 @@ class Profile__():
 
         # usrAgent = UserAgent().random
         
-
+    #Получение ссылки на профиль
         self.steam_profile_url   = f"{url}"
         self.responce_profile    = requests.get(self.steam_profile_url)
         self.html_profile        = self.responce_profile.text
         self.profile             = bs(self.html_profile, 'lxml')
 
 
+    #Объявление переменных
         self.country = ""
         self.status  = ""
         self.vac_ban = ""
         self.community_ban = "" 
         self.trade_ban = ""
         self.profile_type = "Public"
+        self.steamid = "id"
 #====================================================================================
 #NICKNAME
 #====================================================================================
@@ -158,6 +160,10 @@ class Profile__():
 
         for left, right in zip(profile_parse_variable, profile_parse_value):
             print(f"{left}: {right}")
+
+    def findSteamid(self):
+        self.find_steamid = self.profile.find
+
 
 
 if __name__ == "__main__":

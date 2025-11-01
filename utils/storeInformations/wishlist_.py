@@ -25,26 +25,30 @@ class wishlist():
                 #Список желаемого
                 case "list":
                     print("list")
-                    break
+                    wishlist()
 
                 #Добавить в список желаемого 
                 case "add":
                     print('add')
-                    break
+                    wishlist()
 
                 #Удалить из списка желаемого
                 case "remove":
                     print("remove")
-                    break
+                    wishlist()
                 
                 #информация о игре
                 case "info":
                     GameInfo()
-                    break
+                    wishlist()
 
                 #Выход из wishlis_
                 case "menu":
                     break
+
+                case _:
+                    print("Unknow command")
+                    wishlist()
             wishlist()
 
 
