@@ -161,8 +161,6 @@ class Profile__():
         for left, right in zip(profile_parse_variable, profile_parse_value):
             print(f"{left}: {right}")
 
-    def findSteamid(self):
-        self.find_steamid = self.profile.find
 
 
 
