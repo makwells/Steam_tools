@@ -5,68 +5,96 @@ from fake_useragent import UserAgent
 
 class Profile__():
 
-    def __init__(self, url):
+    def __init__(self):
+            
+        self.steam_profile_url = None
+        self.responce_profile = None
+        self.html_profile = None
+        self.profile = None
+        self.steamid = "id"
 
-        # usrAgent = UserAgent().random
-        
-    #Получение ссылки на профиль
+    def Profile(self, url):
+
         self.steam_profile_url   = f"{url}"
         self.responce_profile    = requests.get(self.steam_profile_url)
         self.html_profile        = self.responce_profile.text
         self.profile             = bs(self.html_profile, 'lxml')
-
-
-    #Объявление переменных
-        self.country = ""
-        self.status  = ""
-        self.vac_ban = ""
-        self.community_ban = "" 
-        self.trade_ban = ""
-        self.profile_type = "Public"
         self.steamid = "id"
+
+
 #====================================================================================
 #NICKNAME
 #====================================================================================
+    """
+    Поиск никнейма
+    
+    Можно сделать так, чтобы если программа не находит никнейм, то и профиль тоже, следовательно не верная ссылка, делая это через ник, лучше всего, потому-что внезависимости от настроек приватности профиля никнейм всегда видно.
+    """
+    def get_nickname(self):
+        if self.profile is None:
+            return "Profile not found"
+        
         self.nickname_ = self.profile.find_all('span', class_='actual_persona_name')
         for actual_persona_name in self.nickname_:
-            self.nickname = actual_persona_name.text
+            nickname = actual_persona_name.text
+            return nickname
+        
+        return "Nickname not found"  # Если nickname не найден
 #====================================================================================
 #ACCOUNT LVL
 #====================================================================================
-        try:
-            lvl_ = self.profile.find('span', class_='friendPlayerLevelNum')
-            for friendPlayerLevelNum in lvl_:
-                self.lvl = friendPlayerLevelNum.text
-        except TypeError:
-            self.lvl = "Not found"
-        except UnboundLocalError:
-            self.lvl = "Not found"
+    # Метод получения уровня аккаунта steam
+    def get_lvl_account(self):
+        if self.profile is None:
+            return "Profile not found"
+        lvl = ""
+        lvl_ = self.profile.find('span', class_='friendPlayerLevelNum')
+        for friendPlayerLevelNum in lvl_:
+            lvl = friendPlayerLevelNum.text
+            return lvl
+        return "Lvl not found" 
 #====================================================================================
 #STATUS | ONLINE/OFFLINE
 #====================================================================================
-        try:
-            status_ = self.profile.find_all('div', class_='responsive_status_info')
-            for profile_in_game_header in status_:
-                self.status__ = profile_in_game_header.text
-                self.status = self.status__.replace("\n", "")
-        except Exception:
-            self.status = "Not found"
+    def get_status(self):
+        if self.profile is None:
+            return "Profile not found"
+        self.status  = ""
+        status_ = self.profile.find_all('div', class_='responsive_status_info')
+        for profile_in_game_header in status_:
+            self.status__ = profile_in_game_header.text
+            status = self.status__.replace("\n", "")
+            if status == "Currently Online":
+                status = "Online"
+            if status == "Currently Offline":
+                status = "Offline"
+            return status
+        return "Status not found"
 #====================================================================================
 #COUNTRY (Displays the country listed in the profile)   
 #====================================================================================
-        try:
-            self.country_ = self.profile.find_all('div', class_="header_location")
-            for header_location in self.country_:
-                self.country = re.sub(r'\s+', '', header_location.text)
-
-        except Exception:
-            self.country = "Not found"
+    def get_country(self):
+        if self.profile is None:
+            return "Profile not found"
+        self.country = ""
+        self.country_ = self.profile.find_all('div', class_="header_location")
+        for header_location in self.country_:
+            country = re.sub(r'\s+', '', header_location.text)
+            return country
+        return "Country not found"
 
 #====================================================================================
-#Ban status   
+#VAC-Ban check    
 #====================================================================================
+    def get_vac_ban_information(self):
         bans = {}
-        try:    
+        self.vac_ban = ""
+        # self.community_ban = "" 
+        # self.trade_ban = ""
+
+        if self.profile is None:
+            return "Profile not found"
+        try:
             #vac bans check
             self.vac_ban_ = self.profile.find(text=lambda t: 'VAC ban' in t)
             if self.vac_ban_:
@@ -83,22 +111,40 @@ class Profile__():
             bans = None
             self.vac_ban = "Not found"
 
-                
-            
+#====================================================================================
+#Community-Ban check    
+#====================================================================================
+
+    def get_community_ban_information(self):
+        bans = {}
+        self.community_ban = "" 
+        if self.profile is None:
+            return "Profile not found"
+
         #community ban check
         try:
-
             community_ban_ = self.profile.find(text=lambda t: 'community ban' in t.lower())
             if community_ban_:
                 bans['community_ban'] = True
                 self.community_ban = community_ban_.strip()
+                return self.community_ban
             else:
                 bans['community_ban'] = False
                 bans['community_ban_text'] = None
+                return "VAC-BAN not found"
         except Exception:
-            self.community_ban = "Not found"
-            
-        #trade bun check
+            return "Profile not found"
+#====================================================================================
+#Trade-Ban check    
+#====================================================================================
+    def get_trade_ban_information(self):
+        bans = {}
+        self.trade_ban = ""
+        
+        if self.profile is None:
+            return "Profile not found"
+
+        #trade ban check
         trade_ban = self.profile.find(text=lambda t: 'trade ban' in t.lower())
         if trade_ban:
             bans['trade_ban'] = True
@@ -111,58 +157,14 @@ class Profile__():
 #====================================================================================
 #Profile type(public/private)   
 #====================================================================================
+    def get_profile_type(self):
+        self.profile_type = "Public"
         self.private_profile = self.profile.find(text=lambda t: 'profile is private' in t.lower())
         if self.private_profile:
-            bans['private'] = True
+            self.get_bans_information().bans['private'] = True
             self.profile_type = self.private_profile.strip()
             if self.profile_type == "This profile is private.":
                 self.profile_type = "Private"
-#====================================================================================
-#OUTPUTS
-#====================================================================================
-        output_nickname             = "Nickname"
-        output_url                  = "Profile link"
-        output_profile_type         = "Profile type"
-        output_lvl                  = "Level"
-        output_status               = "Status"
-        output_country              = "Country"
-        output_ban                  = "\nBans"
-        
-        profile_parse_variable = [
-            output_nickname,
-            output_url,
-            output_profile_type,
-            output_lvl,
-            # output_status,
-            output_country,
-        
-        #BANS
-            output_ban,    
-            f"\n\tVAC ban",
-            f"\n\tCommunity ban",
-            f"\n\tTrade ban"
-        ]
-        
-        profile_parse_value = [
-            self.nickname,
-            self.steam_profile_url,
-            self.profile_type,
-            self.lvl,
-            # self.status,
-            self.country,
-            "",
-            "\n\t\t" + self.vac_ban,                 # VAC BAN
-            "\n\t\t" + self.community_ban,           # Community ban
-            "\n\t\t" + self.trade_ban                # Trade ban
-        ]
-
-        # system("cls")
-
-        for left, right in zip(profile_parse_variable, profile_parse_value):
-            print(f"{left}: {right}")
-
-
-
 
 if __name__ == "__main__":
     print("Run main file")
