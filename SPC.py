@@ -9,8 +9,6 @@
 * Выбор действия( Работа со стим профилем, работа с магазином итд).
 """
 
-
-
 import curses
 import curses.panel
 
@@ -74,8 +72,8 @@ class SPC():
             self.main_menu.addstr(self.height-2, 2, "↑↓: Choice | Enter: Select | F8: Main Menu | F10: Exit")
             #Разположение пунктов меню
             for idx, item in enumerate(self.menu_items):
-                x = self.width//2 - len(item)//2
-                y = self.height//2 - len(self.menu_items)//2 + idx
+                x = self.width//2 - len(item)//2 # Выравнивание x по центру
+                y = self.height//2 - len(self.menu_items)//2 + idx # Выравнивание y по центру
                 
                 if idx == current_item:
                     # Выделенный пункт
@@ -135,34 +133,6 @@ class SPC():
         #Ждать символа
         stdscr.getch()
     
-
-    def steam_account(self):
-            #Ссылка на профиль
-            # self.url = input("\n\nPlease provide the Steam account link you are interested in: ")
-            self.url = "https://steamcommunity.com/id/--mkws656--/"
-            self.url_awards = f"{self.url}/awards/"
-            self.url_games = f"{self.url}/games/?tab=all/"
-
-            #Вывод основной информации о профили(main page)
-            print(self.separator_print)
-            self.profile_menu = profile_.Profile__(self.url)
-            print(self.separator_print)
-
-             #Вывод информации о наградах
-            print("\nAwards Information:")
-            print(self.separator_print)
-            self.awards_menu = awards_.Awards__(self.url_awards)
-            print(self.separator_print)
-
-            #Вывод информации о друзьях
-            print(f"\nFriends Information\n{self.separator_print}")
-            self.friends_menu = friends_.Friends()
-
-            #Вывод информации о играх
-            # print("\nGames Information")
-            # print(separator_print)
-            # self.games_menu = games_.Games__(self.url_games)
-            # print(separator_print)   
 
     def wishlist_store(self):
          self.wishlist_menu = wishlist_.wishlist()

@@ -2,8 +2,12 @@ from bs4 import BeautifulSoup as bs
 import requests
 import re
 
-class Awards__():
-    def __init__(self, url_awards):
+class Profile_Awards():
+    def __init__(self):
+        ...
+
+    def Profile(self, url_awards):
+        
 
         self.steam_profile_url_awards = f"{url_awards}"
         self.responce_awards   = requests.get(self.steam_profile_url_awards)
@@ -13,43 +17,43 @@ class Awards__():
 
         self.profile_awards_received = None
         self.profile_awards_given    = None
+        self.profile_awards_header_subtitle = self.awards.find_all("div", class_="profile_awards_header_subtitle")
 
-#====================================================================================
-#ADWARDS RECEIVED | GIVEN
-#====================================================================================
-
-        try:
-            profile_awards_header_subtitle = self.awards.find_all('div', class_='profile_awards_header_subtitle')
+        # try:
+        #     profile_awards_header_subtitle = self.awards.find_all('div', class_='profile_awards_header_subtitle')
             
-            self.profile_awards_received = profile_awards_header_subtitle[0].text
-            self.profile_awards_given = profile_awards_header_subtitle[1].text
+        #     # self.profile_awards_received = profile_awards_header_subtitle[0].text
+        #     self.profile_awards_given = profile_awards_header_subtitle[1].text
 
-        except Exception:
-            self.profile_awards_received = "Not found"
-            self.profile_awards_given = "Not found"
-        except UnboundLocalError:
-            self.profile_awards_received = "Not found"
-            self.profile_awards_given = "Not found"
-
+        # except Exception:
+        #     self.profile_awards_received = "Not found"
+        #     self.profile_awards_given = "Not found"
+        # except UnboundLocalError:
+        #     self.profile_awards_received = "Not found"
+        #     self.profile_awards_given = "Not found"
 #====================================================================================
-#OUTPUTS
+#ADWARDS RECEIVED
 #====================================================================================
-        output_profile_awards_received = "Awards Received"
-        output_profile_awards_given    = "Awards Given"
+    def Get_Awards_Received(self):
+        if self.awards is None:
+            return "Profile not found"
+        try:
+            profile_awards_received = self.profile_awards_header_subtitle[0].text
+            return profile_awards_received
+        except Exception as e:
+            return f"Error: {e}"
+#====================================================================================
+#ADWARDS GIVEN
+#====================================================================================
+    def Get_Awards_Given(self):
+        if self.awards is None:
+            return "Profile not found"
+        try:
+            profile_awards_given = self.profile_awards_header_subtitle[1].text
+            return profile_awards_given
+        except Exception as e:
+            return f"Error: {e}"
 
-        
-        awards_parse_variable = [
-            output_profile_awards_received,
-            output_profile_awards_given
-        ]
-
-        awards_parse_value = [
-            self.profile_awards_received,
-            self.profile_awards_given
-        ]
-
-        for left, right in zip(awards_parse_variable, awards_parse_value):
-            print(f"{left}: {right}")
     
 if __name__ == "__main__":
     print("Run main file")

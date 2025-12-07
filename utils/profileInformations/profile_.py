@@ -27,7 +27,7 @@ class Profile__():
 #====================================================================================
     """
     Поиск никнейма
-    
+
     Можно сделать так, чтобы если программа не находит никнейм, то и профиль тоже, следовательно не верная ссылка, делая это через ник, лучше всего, потому-что внезависимости от настроек приватности профиля никнейм всегда видно.
     """
     def get_nickname(self):
@@ -89,27 +89,29 @@ class Profile__():
     def get_vac_ban_information(self):
         bans = {}
         self.vac_ban = ""
-        # self.community_ban = "" 
-        # self.trade_ban = ""
+
 
         if self.profile is None:
             return "Profile not found"
+        
         try:
             #vac bans check
             self.vac_ban_ = self.profile.find(text=lambda t: 'VAC ban' in t)
             if self.vac_ban_:
                 bans['vac_ban'] = True
-                self.vac_ban = self.vac_ban_.strip()
+                vac_ban = self.vac_ban_.strip()
+                return vac_ban 
             else:
                 bans['vac_ban'] = False
                 bans['vac_ban_text'] = None
+                return "-"
 
         except TypeError:
             bans = None
-            self.vac_ban = "Not found"
+            vac_ban = "Not found"
         except UnboundLocalError:
             bans = None
-            self.vac_ban = "Not found"
+            vac_ban = "Not found"
 
 #====================================================================================
 #Community-Ban check    
@@ -117,7 +119,9 @@ class Profile__():
 
     def get_community_ban_information(self):
         bans = {}
-        self.community_ban = "" 
+        self.community_ban = ""
+
+
         if self.profile is None:
             return "Profile not found"
 
@@ -126,14 +130,19 @@ class Profile__():
             community_ban_ = self.profile.find(text=lambda t: 'community ban' in t.lower())
             if community_ban_:
                 bans['community_ban'] = True
-                self.community_ban = community_ban_.strip()
-                return self.community_ban
+                community_ban = community_ban_.strip()
+                return community_ban
             else:
                 bans['community_ban'] = False
                 bans['community_ban_text'] = None
-                return "VAC-BAN not found"
-        except Exception:
-            return "Profile not found"
+                return "-"
+        except  TypeError as e:
+            bans = None
+            community_ban = f"Error: {e}"
+        except UnboundLocalError as e:
+            bans = None
+            community_ban = f"Error: {e}"
+
 #====================================================================================
 #Trade-Ban check    
 #====================================================================================
@@ -145,26 +154,39 @@ class Profile__():
             return "Profile not found"
 
         #trade ban check
-        trade_ban = self.profile.find(text=lambda t: 'trade ban' in t.lower())
-        if trade_ban:
-            bans['trade_ban'] = True
-            bans['trade_ban_text'] = trade_ban.strip()
-        else:
-            bans['trade_ban'] = False
-            bans['trade_ban_text'] = None
+        trade_ban_ = self.profile.find(text=lambda t: 'trade ban' in t.lower())
+        try:
 
+            if trade_ban_:
+                bans["trade_ban"] = True
+                trade_ban = trade_ban_.strip()
+                return trade_ban
+            else:
+                bans["trade_ban"] = False
+                bans["trade_ban_text"] = None
+                return "-"
+        except TypeError as e:
+            bans = None
+            trade_ban = f"Error: {e}"
+        except UnboundLocalError as e:
+            bans = None
+            trade_ban = f"Error: {e}"
         
 #====================================================================================
 #Profile type(public/private)   
 #====================================================================================
     def get_profile_type(self):
+        if self.profile is None:
+            return "Profile not found"
         self.profile_type = "Public"
         self.private_profile = self.profile.find(text=lambda t: 'profile is private' in t.lower())
         if self.private_profile:
             self.get_bans_information().bans['private'] = True
             self.profile_type = self.private_profile.strip()
             if self.profile_type == "This profile is private.":
-                self.profile_type = "Private"
+                # self.profile_type = "Private"
+                return "Private"
+        return "Public"
 
 if __name__ == "__main__":
     print("Run main file")

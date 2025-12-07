@@ -1,6 +1,6 @@
 # Модули профиля
 from .profileInformations.profile_ import Profile__
-from .profileInformations.awards_ import Awards__
+from .profileInformations.awards_ import Profile_Awards
 from .profileInformations.friends_ import Friends
 from .profileInformations.menu_ import ProfileMenu
 #Модули магазина 
